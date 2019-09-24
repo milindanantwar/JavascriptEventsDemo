@@ -1,0 +1,77 @@
+<html>
+<head>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script>
+        function initMap() {
+
+        }
+    </script>
+</head>
+<body>
+    <input type="text" id="autocomplete" />
+</body>
+<script>
+    $(function () {
+        var doubleClickThreshold = 200;//ms
+        var isDragging = false;
+        var mouseIsDown = false;
+        var timer = 0;
+        var prevent = false;
+
+        $document = $(document);
+
+        //Bind Click event
+        $document.click(function () {
+            timer = setTimeout(function () {
+                if (!prevent && !isDragging) {
+                    //Single Click Code
+                    console.log('Single Click');
+                }
+                prevent = false;
+                isDragging = false;
+            }, doubleClickThreshold);
+        });
+
+        //Bind Double Click event
+        $document.on("dblclick", function () {
+            clearTimeout(timer);
+            prevent = true;
+
+            //Double Click Code
+            console.log('Double Click');
+        });
+
+        //Bind mousedown event
+        $document.mousedown(function () {
+            mouseIsDown = true;
+        });
+
+        //Bind mouseup event
+        $document.mouseup(function () {
+            //isDragging = false;
+            mouseIsDown = false;
+        });
+
+        //Bind mousemove event for drag detection
+        $(document).mousemove(function () {
+            if (mouseIsDown) {
+                isDragging = true;
+            }
+
+            if (isDragging) {
+                console.log('Drag event');
+            }
+        });
+
+        //Key Press detection
+        $(document).keyup(function (e) {
+            if (e.key === "Escape") { // escape key maps to keycode `27`
+                console.log("Escape pressed")
+            }
+        });
+
+    });
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBt12WcQb4kSh-qioaqydudVE_lg3j2jz8&libraries=places&callback=initMap"
+        async defer></script>
+</html>
